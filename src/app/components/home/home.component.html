@@ -1,0 +1,139 @@
+<!-- <h1>
+  {{ 'PAGES.HOME.TITLE' | translate }}
+</h1> -->
+<form [formGroup]="heroForm" (ngSubmit)="onSubmit()" class="form-inline mb-2 mt-2" [ngClass]="{'was-validated': (!heroForm.valid && formSumitAttempt)}">
+  <button type="button" (click)="changeShowStatus()" placement="bottom" ngbTooltip="Setting" class="btn btn-outline-secondary btn-sm mr-2 mb-2">
+    <i class="fa fa-cog" aria-hidden="true"></i>
+  </button>
+
+  <div class="btn-group btn-group-toggle ml-2 mb-2" *ngIf="!showHideSetting" ngbRadioGroup name="radioBasic" (ngModelChange)="onRadioChange()"
+    formControlName="units">
+    <label ngbButtonLabel class="btn-primary btn-sm">
+      <input ngbButton type="radio" name="units" value="imperial"> °F
+    </label>
+    <label ngbButtonLabel class="btn-primary btn-sm">
+      <input ngbButton type="radio" name="units" value="metric"> °C
+    </label>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="input-group input-group-sm" *ngIf="showHideSetting">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="inputGroupSelect01">Refresh</label>
+        </div>
+        <select id="inputGroupSelect01" formControlName="refreshTime">
+          <option value="5">5 minutes</option>
+          <option value="15">15 minutes</option>
+          <option value="30">30 minutes</option>
+          <option value="45">45 minutes</option>
+          <option value="60">60 minutes</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="input-group input-group-sm" *ngIf="showHideSetting">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">App ID</span>
+        </div>
+        <input type="text" class="form-control form-control-sm" required formControlName="appid" placeholder="App id">
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div class="input-group input-group-sm" *ngIf="!showHideSetting">
+    <input type="text" class="form-control form-control-sm" required formControlName="cityName" placeholder="Your city name">
+    <div class="input-group-append">
+      <button type="submit" class="btn btn-outline-primary btn-sm">
+        <i class="fa fa-search" aria-hidden="true"></i> Search</button>
+    </div>
+  </div>
+  <!-- <app-validate [displayError]="isFieldValid('cityName')" errorMsg="Please enter your city name.">
+    </app-validate> -->
+
+</form>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        Weather in
+        <span class="font-weight-bold">{{weather?.name}}, {{weather?.sys.country}}</span>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <h2 class="text-center">
+              <i [ngClass]="weather?.weatherIcon"></i>
+              {{weather?.main.temp}}
+              <span *ngIf="heroForm.controls['units'].value === 'imperial'">
+                °F</span>
+              <span *ngIf="heroForm.controls['units'].value === 'metric'">
+                °C</span>
+            </h2>
+          </div>
+          <div class="col">
+            <small>Temperature</small>
+            <div>
+              <small>
+                <span class="text-primary">Min</span> {{weather?.main.temp_min}}
+                <span *ngIf="heroForm.controls['units'].value === 'imperial'">
+                  °F</span>
+                <span *ngIf="heroForm.controls['units'].value === 'metric'">
+                  °C</span>
+                <span class="text-primary">&nbsp;Max</span> {{weather?.main.temp_max}}
+                <span *ngIf="heroForm.controls['units'].value === 'imperial'">
+                  °F</span>
+                <span *ngIf="heroForm.controls['units'].value === 'metric'">
+                  °C</span>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <table class="table table-bordered table-striped table-sm mb-0">
+        <tbody>
+          <tr>
+            <th scope="col">Wind</th>
+            <td>{{weather?.wind.speed}} m/s, ({{weather?.wind.deg}})</td>
+          </tr>
+          <tr>
+            <th scope="col">Cloudiness</th>
+            <td>{{weather?.clouds.all}} %</td>
+          </tr>
+          <tr>
+            <th scope="col">Pressure</th>
+            <td>{{weather?.main.pressure}} hpa</td>
+          </tr>
+          <tr>
+            <th scope="col">Humidity</th>
+            <td>{{weather?.main.humidity}} %</td>
+          </tr>
+          <tr>
+            <th scope="col">Sunrise</th>
+            <td>{{weather?.sunriseTime}}</td>
+          </tr>
+          <tr>
+            <th scope="col">Sunset</th>
+            <td>{{weather?.sunsetTime}}</td>
+          </tr>
+          <tr>
+            <th scope="col">Geo coords</th>
+            <td>{{weather?.coord.lat}},{{weather?.coord.lon}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="text-center text-primary">
+        <i class="fa fa-clock-o" aria-hidden="true"></i> {{now | date: 'MMM dd, yyyy hh:mm:ss'}}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+  </div>
+
+</div>
